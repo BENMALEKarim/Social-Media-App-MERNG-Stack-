@@ -1,0 +1,27 @@
+name: Docker build push
+
+on:
+  push:
+    branches: [ "**" ]
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+      - name: login to dockerhub
+        env:
+          username: ${{ secrets.DOCKERHUB_USERNAME}}
+          password: ${{ secrets.DOCKERHUB_PASSWORD}}
+        run: |
+          docker login -u $username -p $password
+      - name: docker build
+        run: |
+          docker build -t benmalekarim/backend-social-media-app .
+      - name: docker push
+        run: |
+          docker push benmalekarim/backend-social-media-app
